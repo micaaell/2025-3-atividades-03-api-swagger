@@ -1,38 +1,59 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum TaskStatus {
-  ABERTO = 'aberto',
-  FAZENDO = 'fazendo',
-  FINALIZADO = 'finalizado',
+  OPEN = 'aberto',
+  DOING = 'fazendo',
+  DONE = 'finalizado',
 }
 
 @Entity()
 export class Task {
+  @ApiProperty({
+    description: 'Identificador único da tarefa',
+    example: 1,
+  })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({
+    description: 'Título da tarefa',
+    example: 'Estudar NestJS',
+  })
   @Column()
   title: string;
 
+  @ApiProperty({
+    description: 'Descrição detalhada da tarefa',
+    example: 'Estudar documentação com Swagger',
+  })
   @Column()
   description: string;
 
+  @ApiProperty({
+    description: 'Status da tarefa',
+    enum: TaskStatus,
+    default: TaskStatus.OPEN,
+    example: TaskStatus.OPEN,
+  })
   @Column({
     type: 'text',
-    enum: TaskStatus,
-    default: TaskStatus.ABERTO,
+    default: TaskStatus.OPEN,
   })
   status: TaskStatus;
 
+
+  @ApiProperty({
+    description: 'Data de criação da tarefa',
+    type: Date,
+  })
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty({
+    description: 'Data da última atualização da tarefa',
+    type: Date,
+  })
   @UpdateDateColumn()
   updatedAt: Date;
 }

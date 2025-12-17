@@ -1,16 +1,30 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { TaskStatus } from '../task.entity';
 
 export class UpdateTaskDto {
-  @IsString()
+  @ApiPropertyOptional({
+    description: 'Novo título da tarefa',
+    example: 'Atualizar atividade',
+  })
   @IsOptional()
+  @IsString()
   title?: string;
 
-  @IsString()
+  @ApiPropertyOptional({
+    description: 'Nova descrição da tarefa',
+    example: 'Atualização da documentação Swagger',
+  })
   @IsOptional()
+  @IsString()
   description?: string;
 
-  @IsEnum(TaskStatus)
+  @ApiPropertyOptional({
+    description: 'Novo status da tarefa',
+    enum: TaskStatus,
+    example: TaskStatus.DONE,
+  })
   @IsOptional()
+  @IsEnum(TaskStatus)
   status?: TaskStatus;
 }
